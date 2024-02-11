@@ -11,52 +11,51 @@ const router = express.Router();
 // Register route
 
 router.post('/register', async (req, res) => {
-
   try {
-    const { employeeId } = req.body;
+    const { employeeId,role} = req.body;
 
-    // Generate a random 4-digit employee ID
-    const generatedEmployeeId = Math.floor(1000 + Math.random() * 9000).toString();
+    // Check if required fields are present
+    if (!employeeId) {
+      // console.error(error);
+      return res.status(400).json({ error: 'Employee ID is required' });
+    }
 
-    // Generate a random password (you may want a more secure method in production)
+    // Check if the user with the given employeeId already exists
+    const existingUser = await User.findOne({ employeeId });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Employee ID already registered' });
+    }
+
+    // Generate a password (you can customize this logic)
+    // const generatedPassword = Math.random().toString(36).substring(7);
     const generatedPassword = Math.random().toString(36).substring(7);
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(generatedPassword, salt);
 
-    const user = new User({
-      employeeId: generatedEmployeeId,
-      password: generatedPassword,
+    // Create a new user
+    const newUser = new User({
+      employeeId,
+      password:hash,
+      role
     });
 
-    await user.save();
+    // Save the user to the database
+    const savedUser = await newUser.save();
 
     res.status(201).json({
-      employeeId: generatedEmployeeId,
-      password: generatedPassword,
+      employeeId: savedUser.employeeId,
+      password: savedUser.password,
+      role: savedUser.role,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+    console.error('Registration failed:', error);
 
-// Login route
-router.post('/login', async (req, res) => {
-  try {
-    const { employeeId, password } = req.body;
-
-    const user = await User.findOne({ employeeId });
-
-    if (!user) {
-      return res.status(404).json({ error: 'Employee not found' });
+    // Handle specific validation errors
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ error: 'Validation failed', details: error.errors });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid password' });
-    }
-
-    res.json({ message: 'Login successful' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error});
   }
 });
 

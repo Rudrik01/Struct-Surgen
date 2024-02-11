@@ -1,7 +1,7 @@
-
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
@@ -13,17 +13,22 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+userSchema.index({ employeeId: 1 }, { unique: true });
 
-// Hash the password before saving
-userSchema.pre('save', async function (next) {
-  const user = this;
-  if (!user.isModified('password')) return next();
+// userSchema.pre('save', async function (next) {
+//   const user = this;
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(user.password, salt);
-  user.password = hash;
-  next();
-});
+//   // Generate a password if it's not provided
+//   if (!user.password) {
+//     const generatedPassword = Math.random().toString(36).substring(7);
+//     const salt = await bcrypt.genSalt(10);
+//     const hash = await bcrypt.hash(generatedPassword, salt);
+//     user.password = hash;
+//   }
 
+//   next();
+// });
 
-export default mongoose.model('users',userSchema)
+const User = mongoose.model('User', userSchema);
+
+export default User;
