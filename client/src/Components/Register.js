@@ -1,64 +1,109 @@
-// client/src/components/Register.js
+import {
+  Select,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  FormHelperText,
+} from "@mui/material";
 import React, { useState } from 'react';
 import axios from 'axios';
+import "./CreateEmployee.css";
 
-const Register = () => {
-  const [employeeId, setEmployeeId] = useState('');
-  const [role, setRole] = useState('employee'); // Default to 'employee'
-  const [registrationData, setRegistrationData] = useState(null);
-  const [error, setError] = useState(null);
+const EmployeeForm = () => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
 
-  const handleRegister = async () => {
+  const handleCreateEmployee = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/auth/register', {
-        employeeId,
+      const response = await axios.post('http://localhost:5000/auth/createEmployee', {
+        email,
+        name,
         role,
       });
-      
   
-      if (response && response.data) {
-        // Check if response and response.data are defined
-        setRegistrationData(response.data);
-        setError(null);
+      console.log(response.data);
+  
+      if (response.status === 400) {
+        alert(response.data.message);
       } else {
-        setError("Invalid response from the server");
+        alert('Employee created successfully!');
+        // Redirect to the desired page or clear the form, etc.
       }
     } catch (error) {
-      setRegistrationData(null);
-      setError(error.response?.data?.error || error);
+      console.error('Error creating employee:', error);
+      alert('Error creating employee. Please try again.');
     }
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <label>
-        Employee ID:
-        <input type="text" value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Role:
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="employee">Employee</option>
-          <option value="admin">Admin</option>
-        </select>
-      </label>
-      <br />
-      <button onClick={handleRegister}>Register</button>
-
-      {registrationData && (
-        <div>
-          <p>Registration successful!</p>
-          <p>Employee ID: {registrationData.employeeId}</p>
-          <p>Password: {registrationData.password}</p>
-          <p>Role: {registrationData.role}</p>
+    <div className="create-employee">
+      <section className="main-container">
+        <div className="content-area">
+          <div className="form-container">
+            <img
+              className="whatsapp-image-2024-03-05-at-3-icon"
+              loading="lazy"
+              alt=""
+              src="/logo.png"
+            />
+          </div>
+          <div className="rectangle-parent">
+            <div className="frame-child" />
+            <div className="button-primary">
+              <div className="create-employee1">Create Employee</div>
+            </div>
+            <div className="field-labels">
+              <div className="email">Email</div>
+              <input
+                className="input-fields"
+                placeholder="Enter Email"
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="field-labels">
+              <div className="email">Name</div>
+              <input
+                className="input-fields"
+                placeholder="Enter Name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="field-labels2">
+              <div className="role">Role</div>
+              <FormControl variant="outlined" className="parent">
+                <InputLabel id="role-label">Select Role</InputLabel>
+                <Select
+                  labelId="role-label"
+                  label="Select Role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required
+                >
+                  <MenuItem value="">None</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="employee">Employee</MenuItem>
+                </Select>
+                <FormHelperText>Choose the role for the employee</FormHelperText>
+              </FormControl>
+            </div>
+            <div className="button-secondary">
+              <button className="create-employee2 cart button-secondary" onClick={handleCreateEmployee}>
+                Create Employee
+              </button>
+            </div>
+          </div>
         </div>
-      )}
-
-      {error && <p>Error: {error}</p>}
+      </section>
+      <img className="vectors-icon" alt="" src="/vectors.svg" />
     </div>
   );
 };
 
-export default Register;
+export default EmployeeForm;

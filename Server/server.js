@@ -8,7 +8,10 @@ import { Route } from 'router';
 import morgan from 'morgan';
 import path from 'path';
 import User from './Models/userModel.js';
+import task from './Routes/taskRoutes.js'
 import bcrypt from 'bcrypt';
+import display from './Routes/display.js'
+import userRoutes from './Routes/users.js';
 dotenv.config({path: '../.env'});
 const app = express();
 const PORT = process.env.PORT;
@@ -25,7 +28,10 @@ try{
         console.log(`Error in MongoDB ${error}`)
 }
 app.use('/auth',authRoutes);
-
+app.use('/api/task',task);
+app.use('/display',display);
+app.use('/api/users', userRoutes);
+app.use('/tasks',task)
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });

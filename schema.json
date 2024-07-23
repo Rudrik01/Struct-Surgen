@@ -1,0 +1,66 @@
+{
+    "title": "task",
+    "type": "object",
+    "properties": {
+      "sNo": {
+        "type": "number"
+      },
+      "companyName": {
+        "type": "string"
+      },
+      "consultant": {
+        "type": "string"
+      },
+      "gidc": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "employ": {
+        "type": "string"
+      },
+      "hp": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string"
+      },
+      "priVisit": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "quotation": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "visit": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "drawing": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "documentsToBeUpload": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "assignedTo": {
+        "type": "string"
+      },
+      "createdAt": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "updatedAt": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": [],
+    "additionalProperties": false
+  }
+  
