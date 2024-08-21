@@ -1,0 +1,39 @@
+/* client/src/Components/TaskDetail.css */
+.task-detail {
+    padding: 20px;
+  }
+  
+  .task-detail form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .task-detail label {
+    font-weight: bold;
+  }
+  
+  .task-detail input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .task-detail button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .task-detail button:hover {
+    background-color: #45a049;
+  }
+  
+  .task-detail p {
+    color: red;
+    font-weight: bold;
+  }
+  

@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const userSchema = new Schema(
   {
     sNo: { type: Number },
-    companyName: { type: String },
+    companyName: { type: String,index:true },
     consultant: { type: String },
     gidc: { type: String },
     type: { type: String },

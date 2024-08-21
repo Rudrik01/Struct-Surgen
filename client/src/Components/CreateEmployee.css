@@ -1,4 +1,4 @@
-.whatsapp-image-2024-03-05-at-3-icon {
+/* .whatsapp-image-2024-03-05-at-3-icon {
   height: 61.9px;
   width: 145.3px;
   position: relative;
@@ -264,4 +264,100 @@
   .create-employee {
     gap: 30px;
   }
+} */
+.-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-honeydew);
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  width: 100vw;
+  z-index: 1;
+}
+
+.employee-form {
+  background-color: #edf2f7;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 429px;
+  height: auto;
+  border-radius: 18px;
+  background: #C9D4C6;
+}
+
+.logo {
+  width: 145.297px;
+  height: 61.918px;
+  flex-shrink: 0;
+}
+
+.employee-form .title {
+  color: #06273A;
+  font-family: "Lexend Deca";
+  font-size: 48px;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+.employee-form .form-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.form-group .label {
+  color: #06273A;
+  font-family: "Lexend Deca";
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.form-group .input {
+  width: 100%;
+  height: 47px;
+  border-radius: 7px;
+  background: #EDF5EA;
+  margin-top: 1rem;
+  color: #AFBDAB;
+  font-family: "Lexend Deca";
+  font-size: 16px;
+  font-weight: 400;
+  padding-left: 0.5rem;
+  border: none;
+}
+
+.employee-form .button {
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  background: #E6301B;
+  color: #EDF5EA;
+  font-family: "Lexend Deca";
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 1rem;
+  border: none;
+}
+
+.button:hover {
+  background-color: #c53030;
+}
+
+.-container .footer-icon {
+  width: 100vw;
+  position: relative;
+  bottom: -16.1rem;
+  object-fit: cover;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }

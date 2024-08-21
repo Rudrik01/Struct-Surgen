@@ -1,0 +1,120 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--color-honeydew);
+}
+
+.main--container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 21rem;
+    width: 100vw;
+    z-index: 1;
+    height: 10px;
+}
+
+.container {
+    background-color: #edf2f7;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 429px;
+    height: 500px;
+    border-radius: 18px;
+    background: #C9D4C6;
+    margin-bottom: 1rem;
+}
+
+.logo {
+    width: 145.297px;
+    height: 61.918px;
+    flex-shrink: 0;
+}
+
+.title {
+    color: #06273A;
+    font-family: "Lexend Deca";
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 1rem;
+}
+
+.form-group {
+    margin-bottom: 2.5rem;
+    text-align: left;
+}
+
+.label {
+    color: #06273A;
+    font-family: "Lexend Deca";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.input {
+    width: 425px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    background: #EDF5EA;
+    margin-top: 1rem;
+    color: #AFBDAB;
+    font-family: "Lexend Deca";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-left: 0.5rem;
+    border: none;
+}
+
+#assignTo{
+    width: 435px;
+}
+
+#companyName::placeholder{
+    color: #AFBDAB;
+    padding-left: 0.5rem;
+}
+
+
+
+.button {
+    /* display: inline-flex; */
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+    background: #E6301B;
+    color: #EDF5EA;
+    font-family: "Lexend Deca";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+}
+
+.button:hover {
+    background-color: #c53030;
+}
+
+.footer-icon{
+    width:100vw;
+    position: relative;
+    bottom: -19.1rem;
+    /* height: 184.5px; */
+    object-fit: cover;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}

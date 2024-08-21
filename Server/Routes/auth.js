@@ -6,6 +6,8 @@ import axios from 'axios';
 import nodemailer from 'nodemailer';
 import session from 'express-session';
 import crypto from 'crypto'
+
+import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 
@@ -145,36 +147,70 @@ router.post('/createEmployee', async (req, res) => {
 
 
 
-//Login
+// //Login
+// router.post('/login', async (req, res) => {
+//   try {
+//     const { employeeId, password } = req.body;
+
+//     // Check if the user is attempting admin login
+//     if (employeeId === 'admin') {
+//       // Query the database for the admin user
+//       const adminUser = await User.findOne({ employeeId: 'admin' });
+
+//       // Check if the admin user exists
+//       if (!adminUser) {
+//         return res.status(401).json({ message: 'Invalid credentials' });
+//       }
+
+//       // Check if the provided password matches the stored hashed password for the admin
+//       const isPasswordValid = await bcrypt.compare(password, adminUser.password);
+
+//       if (!isPasswordValid) {
+//         return res.status(401).json({ message: 'Invalid credentials' });
+//       }
+
+//       // Add logic to redirect to the admin panel (replace '/admin-panel' with your actual admin panel route)
+      
+//       return res.status(200).json({ message: 'Admin login successful', user: adminUser });
+//     }
+
+//     // Check if the user exists
+//     const user = await User.findOne({ employeeId });
+
+//     if (!user) {
+//       return res.status(401).json({ message: 'Invalid credentials' });
+//     }
+
+//     // Check if the provided password matches the stored hashed password
+//     const isPasswordValid = await bcrypt.compare(password, user.password);
+
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ message: 'Invalid credentials' });
+//     }
+//     // Respond with a success message or user data
+//     console.log(user);
+//     res.status(200).json({ message: 'Login successful', user });
+//   } catch (error) {
+//     console.error('Error during login:', error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
+const JWT_SECRET = 'your_jwt_secret_key'; // Replace with your actual secret key
+
 router.post('/login', async (req, res) => {
   try {
     const { employeeId, password } = req.body;
 
+    let user;
+
     // Check if the user is attempting admin login
     if (employeeId === 'admin') {
-      // Query the database for the admin user
-      const adminUser = await User.findOne({ employeeId: 'admin' });
-
-      // Check if the admin user exists
-      if (!adminUser) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-
-      // Check if the provided password matches the stored hashed password for the admin
-      const isPasswordValid = await bcrypt.compare(password, adminUser.password);
-
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-
-      // Add logic to redirect to the admin panel (replace '/admin-panel' with your actual admin panel route)
-      
-      return res.status(200).json({ message: 'Admin login successful', user: adminUser });
+      user = await User.findOne({ employeeId: 'admin' });
+    } else {
+      user = await User.findOne({ employeeId });
     }
 
     // Check if the user exists
-    const user = await User.findOne({ employeeId });
-
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -185,22 +221,38 @@ router.post('/login', async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    // Respond with a success message or user data
-    console.log(user);
-    res.status(200).json({ message: 'Login successful', user });
+
+    // Generate a JWT token
+    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ message: 'Login successful', token, user });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
+router.get('/verifyToken', async (req, res) => {
+  const token = req.headers['authorization'].split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Failed to authenticate token' });
+    }
+    res.status(200).json({ message: 'Token is valid', decoded });
+  });
+});
+
 // Change Password
 router.post('/changePassword', async (req, res) => {
   try {
-    const { email,employeeId, oldPassword, newPassword } = req.body;
+    const { employeeId, oldPassword, newPassword, email } = req.body;
 
     // Check if the user exists
-    const user = await User.findOne({ employeeId,email });
+    const user = await User.findOne({ employeeId });
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -219,12 +271,33 @@ router.post('/changePassword', async (req, res) => {
     // Update the user's password in the database
     user.password = hashedNewPassword;
     await user.save();
-    
+
     const mailOptions = {
       from: 'patelrudrik1601@gmail.com',
       to: user.email,
       subject: 'Password Reset Successfully',
-      text: `Your Password has been successfully `,
+      html: `
+         <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #dddddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <img src="cid:logo" alt="Company Logo" style="width: 150px;"/>
+          </div>
+          <h2 style="color: #333;">Hello ${user.name},</h2>
+          <p style="font-size: 16px; color: #555;">Your password has been successfully changed.</p>
+          <p style="font-size: 16px; color: #555;">If you did not initiate this change, please contact our support team immediately.</p>
+          <p style="font-size: 16px; color: #555;">Best regards,<br>Your Company Name</p>
+          <div style="margin-top: 20px; text-align: center;">
+            <a href="http://yourcompany.com/support" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: white; background-color: #007BFF; text-decoration: none; border-radius: 5px;">Contact Support</a>
+          </div>
+          <footer style="text-align: center; margin-top: 20px; font-size: 12px; color: #999;">
+            <p>&copy; ${new Date().getFullYear()} Your Company Name. All rights reserved.</p>
+          </footer>
+        </div>
+      ` 
+      // attachments: [{
+      //   filename: 'logo.png',
+      //   path: 'path/to/logo.png',
+      //   cid: 'logo' // Same cid value as in the html img src
+      // }]
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -233,16 +306,13 @@ router.post('/changePassword', async (req, res) => {
         res.status(500).json({ message: 'Error sending email' });
       } else {
         console.log('Email sent:', info.response);
-        res.status(201).json({ message: 'Employee created successfully. Check your email for login details.' });
+        res.status(200).json({ message: 'Password changed successfully. Check your email for confirmation.' });
       }
     });
-    // Respond with a success message
-    res.status(200).json({ message: 'Password changed successfully' });
   } catch (error) {
     console.error('Error changing password:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-
 
 export default router
