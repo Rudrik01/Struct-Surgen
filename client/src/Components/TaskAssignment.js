@@ -1,88 +1,15 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-
-// const TaskAssignment = () => {
-//   const [employees, setEmployees] = useState([]);
-//   const [companyName, setTitle] = useState("");
-//   const [assignedTo, setAssignedTo] = useState("");
-
-//   useEffect(() => {
-//     // Fetch list of employees to populate the dropdown
-//     axios
-//       .get("http://localhost:5000/api/users")
-//       .then((response) => {
-//         setEmployees(response.data);
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching employees:", error);
-//       });
-//   }, []);
-
-//   const handleTaskAssignment = () => {
-//     // Find the selected employee object based on the assignedTo value
-//     const selectedEmployee = employees.find(
-//       (employee) => employee._id === assignedTo
-//     );
-
-//     if (!selectedEmployee) {
-//       console.error("Invalid employee ID");
-//       return;
-//     }
-
-//     // Submit the task assignment to the backend
-//     axios
-//       .post("http://localhost:5000/api/task/assign", {
-//         companyName,
-//         assignedTo: selectedEmployee.employeeId, // Use employeeId here instead of _id
-//       })
-//       .then((response) => {
-//         console.log("Task assigned successfully:", response.data);
-//         // You can reset the form or perform other actions after successful assignment
-//       })
-//       .catch((error) => {
-//         console.error("Error assigning task:", error);
-//       });
-//   };
-//   return (
-//     <div>
-//       <h2>Assign Task</h2>
-//       <div>
-//         <label>Company Name:</label>
-//         <input
-//           type="text"
-//           value={companyName}
-//           onChange={(e) => setTitle(e.target.value)}
-//           required
-//         />
-//       </div>
-//       <div>
-//         <label>Assign To:</label>
-//         <select
-//           value={assignedTo}
-//           onChange={(e) => setAssignedTo(e.target.value)}>
-//           <option value="">Select Employee</option>
-//           {employees.map((employee) => (
-//             <option key={employee._id} value={employee._id}>
-//               {`${employee.employeeId} - ${employee.name}`}
-//             </option>
-//           ))}
-//         </select>
-//       </div>
-//       <button onClick={handleTaskAssignment}>Assign Task</button>
-//     </div>
-//   );
-// };
-
-// export default TaskAssignment;
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./TaskAssignment.css" 
+import "./TaskAssignment.css";
 
 const TaskAssignment = () => {
   const [employees, setEmployees] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
+  const [mainTask, setMainTask] = useState("");
+  const [subtasks, setSubtasks] = useState([
+    { name: "", formData: {}, deadline: "" },
+  ]);
 
   useEffect(() => {
     // Fetch list of employees to populate the dropdown
@@ -96,30 +23,34 @@ const TaskAssignment = () => {
       });
   }, []);
 
+  const handleAddSubtask = () => {
+    setSubtasks([...subtasks, { name: "", formData: {}, deadline: "" }]);
+  };
+
+  const handleSubtaskChange = (index, field, value) => {
+    const newSubtasks = [...subtasks];
+    newSubtasks[index][field] = value;
+    setSubtasks(newSubtasks);
+  };
+
   const handleTaskAssignment = (event) => {
     event.preventDefault();
-    // Find the selected employee object based on the assignedTo value
-    const selectedEmployee = employees.find(
-      (employee) => employee._id === assignedTo
-    );
-
-    if (!selectedEmployee) {
-      console.error("Invalid employee ID");
-      return;
-    }
 
     // Submit the task assignment to the backend
     axios
-      .post("http://localhost:5000/api/task/assign", {
+      .post("http://localhost:5000/tasks/assign", {
         companyName,
-        assignedTo: selectedEmployee.employeeId, // Use employeeId here instead of _id
+        assignedTo,
+        mainTask,
+        subtasks,
       })
       .then((response) => {
         console.log("Task assigned successfully:", response.data);
-        alert('Task Assigned Successfully')
-        // You can reset the form or perform other actions after successful assignment
+        alert("Task Assigned Successfully");
         setCompanyName("");
         setAssignedTo("");
+        setMainTask("");
+        setSubtasks([{ name: "", formData: {}, deadline: "" }]);
       })
       .catch((error) => {
         console.error("Error assigning task:", error);
@@ -166,66 +97,64 @@ const TaskAssignment = () => {
                 ))}
               </select>
             </div>
+            <div className="form-group">
+              <label htmlFor="mainTask" className="label">
+                Main Task
+              </label>
+              <select
+                id="mainTask"
+                value={mainTask}
+                onChange={(e) => setMainTask(e.target.value)}
+                className="input"
+                required
+              >
+                <option value="">Select Main Task</option>
+                <option value="Documents">Documents</option>
+                <option value="Drawing">Drawing</option>
+                <option value="License">License</option>
+                <option value="Site Visit">Site Visit</option>
+                <option value="Stability">Stability</option>
+              </select>
+            </div>
+            {subtasks.map((subtask, index) => (
+              <div key={index} className="form-group">
+                <label className="label">Subtask {index + 1}</label>
+                <input
+                  type="text"
+                  value={subtask.name}
+                  onChange={(e) =>
+                    handleSubtaskChange(index, "name", e.target.value)
+                  }
+                  placeholder="Enter Subtask Name"
+                  className="input"
+                  required
+                />
+                <input
+                  type="date"
+                  value={subtask.deadline}
+                  onChange={(e) =>
+                    handleSubtaskChange(index, "deadline", e.target.value)
+                  }
+                  className="input"
+                  required
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddSubtask}
+              className="button"
+            >
+              Add Another Subtask
+            </button>
             <button type="submit" className="button">
               Assign Task
             </button>
           </form>
         </div>
       </div>
-      <img className="footer-icon" alt="" src="/vectors.svg" />
     </div>
   );
 };
-
-// const styles = {
-//   app: {
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     height: "100vh",
-//     backgroundColor: "#f5f7f9",
-//   },
-//   container: {
-//     backgroundColor: "#edf2f7",
-//     padding: "2rem",
-//     borderRadius: "10px",
-//     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-//     textAlign: "center",
-//   },
-//   logo: {
-//     maxWidth: "100px",
-//     marginBottom: "1rem",
-//   },
-//   title: {
-//     color: "#2d3748",
-//     marginBottom: "1rem",
-//   },
-//   formGroup: {
-//     marginBottom: "1rem",
-//     textAlign: "left",
-//   },
-//   label: {
-//     display: "block",
-//     marginBottom: "0.5rem",
-//     color: "#4a5568",
-//   },
-//   input: {
-//     width: "100%",
-//     padding: "0.5rem",
-//     border: "1px solid #cbd5e0",
-//     borderRadius: "5px",
-//   },
-//   button: {
-//     backgroundColor: "#e53e3e",
-//     color: "white",
-//     border: "none",
-//     padding: "0.5rem 1rem",
-//     borderRadius: "5px",
-//     cursor: "pointer",
-//   },
-//   buttonHover: {
-//     backgroundColor: "#c53030",
-//   },
-// };
 
 export default TaskAssignment;

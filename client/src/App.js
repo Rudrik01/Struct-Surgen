@@ -1,4 +1,3 @@
-// client/src/App.js
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
@@ -6,12 +5,15 @@ import EmployeeForm from './Components/Register';
 import AdminForm from './Components/addadmin';
 import AdminDashboard from './Components/taskstat';
 import TaskAssignment from './Components/TaskAssignment';
-import EmployeeDashboard from './Components/EmployeeDashboard';
 import ChangePassword from './Components/resetpassword';
 import AdminHome from './Components/AdminHome';
 import ProtectedRoute from './Components/ProtectedRoute';
-import TaskDetail from './Components/TaskDetail'
-
+import TaskDetail from './Components/TaskDetail';
+import TaskAllocation from './Components/taskal';
+import CompanyRegistration from './Components/CompanyRegistration';
+import EmployeeDashboard from './Components/EmployeeDashboard';
+import TaskForm from './Components/TaskForm';
+import EmployeeProfile from './Components/EmployeeProfile';
 const App = () => {
   return (
     <Routes>
@@ -22,8 +24,12 @@ const App = () => {
       <Route path="/addadmin" element={<ProtectedRoute element={AdminForm} roles={['admin']} />} />
       <Route path="/AdminDashboard" element={<ProtectedRoute element={AdminDashboard} roles={['admin']} />} />
       <Route path="/TaskAssignment" element={<ProtectedRoute element={TaskAssignment} roles={['admin']} />} />
-      <Route path="/taskdisplay/:employeeId" element={<EmployeeDashboard />} />
-      <Route path="/taskdetail/:companyname" element={<TaskDetail />} /> {/* Add new route */}
+      <Route path="/company" element={<ProtectedRoute element={CompanyRegistration} roles={['admin']} />} />
+      <Route path="/taskall" element={<ProtectedRoute element={TaskAllocation} roles={['admin']} />} />
+      <Route path="/dashboard" element={<ProtectedRoute element={EmployeeDashboard} />} />
+      <Route path="/task/:taskId" element={<ProtectedRoute element={TaskForm} />} />
+      <Route path="/employee/profile" element={<ProtectedRoute element={EmployeeProfile} />} />
+
       {/* Add other routes as needed */}
     </Routes>
   );

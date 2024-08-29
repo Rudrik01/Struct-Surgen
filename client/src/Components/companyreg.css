@@ -1,0 +1,78 @@
+/* CompanyRegistration CSS */
+:root {
+    --color-background: #f0fff0; /* Light green, similar to the overall background color */
+    --color-form-bg: #d3d3d3; /* Soft gray-green background for the form container */
+    --color-input-bg: #ffffff; /* White background for input fields */
+    --color-input-border: #c0c0c0; /* Light gray border for input fields */
+    --color-button-bg: #ff4c4c; /* Red background for the login button */
+    --color-button-bg-hover: #e04343; /* Darker red on hover */
+    --color-text: #4a4a4a; /* Dark gray text color */
+    --br-lg: 8px;
+    --padding-lg: 16px;
+    --font-family: 'Lexend Deca', sans-serif;
+  }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-family);
+    background-color: var(--color-background);
+  }
+  
+  .company-registration-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .company-registration-logo {
+    margin-bottom: 20px;
+  }
+  
+  .company-registration-logo img {
+    width: 150px;
+    height: auto;
+  }
+  
+  .company-registration-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .company-registration-form {
+    background-color: var(--color-form-bg);
+    padding: var(--padding-lg);
+    border-radius: var(--br-lg);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+  
+  .company-registration-form input {
+    width: 92%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: var(--br-lg);
+    border: 1px solid var(--color-input-border);
+    background-color: var(--color-input-bg);
+    color: var(--color-text);
+  }
+  
+  .company-registration-form button {
+    width: 97%;
+    padding: 10px;
+    background-color: var(--color-button-bg);
+    color: white;
+    border: none;
+    border-radius: var(--br-lg);
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .company-registration-form button:hover {
+    background-color: var(--color-button-bg-hover);
+  }
+  

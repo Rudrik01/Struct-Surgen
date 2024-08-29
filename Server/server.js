@@ -12,6 +12,8 @@ import task from './Routes/taskRoutes.js'
 import bcrypt from 'bcrypt';
 import display from './Routes/display.js'
 import userRoutes from './Routes/users.js';
+import newtask from './Routes/newtask.js'
+import employeeDashboardRoutes from './Routes/employeedashboardroutes.js'; 
 dotenv.config({path: '../.env'});
 const app = express();
 const PORT = process.env.PORT;
@@ -31,6 +33,10 @@ app.use('/auth',authRoutes);
 app.use('/api/task',task);
 app.use('/display',display);
 app.use('/api/users', userRoutes);
+app.use('/api/new',newtask);
+app.use('/api/employee', employeeDashboardRoutes);
+
+
 app.use('/tasks',task)
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

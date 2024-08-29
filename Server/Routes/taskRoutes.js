@@ -1,10 +1,10 @@
-
 import express from 'express';
-import task from '../Models/task.js';
+import Task from '../Models/task.js';
 import User from '../Models/userModel.js';
-import crypto  from 'crypto'
-const router = express.Router();
+import crypto from 'crypto';
 import session from 'express-session';
+
+const router = express.Router();
 
 // Generate a random secret key
 const secretKey = crypto.randomBytes(32).toString('hex');
@@ -14,12 +14,13 @@ router.use(
   session({
     secret: secretKey,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
-// Create a new task and assign it to an employee
+
+// Route to assign a new task with subtasks to an employee
 router.post('/assign', async (req, res) => {
-  const { companyName, assignedTo } = req.body;
+  const { companyName, assignedTo, mainTask, subtasks } = req.body;
 
   try {
     // Check if the assigned employee exists
@@ -29,7 +30,15 @@ router.post('/assign', async (req, res) => {
       return res.status(400).json({ message: 'Assigned employee does not exist' });
     }
 
-    const newTask = new task({companyName, assignedTo });
+    // Create the new task with subtasks
+    const newTask = new Task({
+      companyName,
+      assignedTo,
+      mainTask,
+      subtasks,
+      currentSubtask: subtasks[0]?.name,  // Set the first subtask as the current one
+    });
+
     await newTask.save();
 
     res.status(201).json(newTask);
@@ -39,61 +48,49 @@ router.post('/assign', async (req, res) => {
   }
 });
 
-// Route to check status and documents uploaded by an employee
-router.get('/checkStatusAndDocuments/:employeeId', async (req, res) => {
+// Route to update a subtask's status and formData
+router.put('/task/:taskId/subtask/:subtaskId', async (req, res) => {
+  const { taskId, subtaskId } = req.params;
+  const { formData, status } = req.body;
+
   try {
-    const { employeeId } = req.params;
+    const task = await Task.findById(taskId);
 
-    // Find tasks assigned to the employee with the given employeeId
-    const tasks = await task.find({ assignedTo: employeeId });
-
-    if (!tasks || tasks.length === 0) {
-      return res.status(404).json({ message: 'No tasks found for the employee' });
-    }
-
-    // Fetch user data for the selected employee
-    const user = await User.findOne({ employeeId });
-
-    // You can send back the list of tasks with all fields and user data to the frontend
-    res.status(200).json({ tasks, user });
-  } catch (error) {
-    console.error('Error checking status and documents:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
-
-// Get task by company name
-router.get('/task/company/:companyName', async (req, res) => {
-  try {
-    const task = await Task.findOne({ companyName: req.params.companyName });
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
-    res.json(task);
-  } catch (error) {
-    console.error('Error fetching task:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
 
-// Update task by company name
-router.put('/task/company/:companyName', async (req, res) => {
-  try {
-    // Exclude the assignedTo field from being updated
-    const { assignedTo, ...updateData } = req.body;
-    const task = await Task.findOneAndUpdate({ companyName: req.params.companyName }, updateData, { new: true });
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found' });
+    // Find the subtask to update
+    const subtask = task.subtasks.id(subtaskId);
+
+    if (!subtask) {
+      return res.status(404).json({ message: 'Subtask not found' });
     }
-    res.json({ message: 'Task updated successfully', task });
+
+    // Update the subtask's formData and status
+    subtask.formData = formData;
+    subtask.status = status;
+    if (status === 'completed') {
+      subtask.completedAt = new Date();
+
+      // Move to the next subtask if available
+      const nextSubtaskIndex = task.subtasks.findIndex(st => st._id.toString() === subtaskId) + 1;
+      if (nextSubtaskIndex < task.subtasks.length) {
+        task.currentSubtask = task.subtasks[nextSubtaskIndex].name;
+      } else {
+        task.currentSubtask = null;  // All subtasks are completed
+      }
+    }
+
+    await task.save();
+
+    res.status(200).json({ message: 'Subtask updated successfully', task });
   } catch (error) {
-    console.error('Error updating task:', error);
+    console.error('Error updating subtask:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
+// Additional routes can be added here for further functionalities
 
-// ... (other routes)
-
-export default router
+export default router;

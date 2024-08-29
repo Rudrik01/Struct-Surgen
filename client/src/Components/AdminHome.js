@@ -1,4 +1,3 @@
-// client/src/Components/AdminHome.js
 import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './AdminHome.css';
@@ -56,7 +55,7 @@ const AdminHome = () => {
               <h2>View Task Statistics</h2>
             </div>
           </Link>
-          <Link to="/TaskAssignment" className="dashboard-card animate">
+          <Link to="/taskall" className="dashboard-card animate">
             <img src="/path/to/image2.jpg" alt="Assign Tasks" className="card-image" />
             <div className="card-content">
               <h2>Assign Tasks</h2>
@@ -72,6 +71,12 @@ const AdminHome = () => {
             <img src="/path/to/image4.jpg" alt="Change Password" className="card-image" />
             <div className="card-content">
               <h2>Change Password</h2>
+            </div>
+          </Link>
+          <Link to="/company" className="dashboard-card animate">
+            <img src="/path/to/image5.jpg" alt="Register Company" className="card-image" />
+            <div className="card-content">
+              <h2>Register Company</h2>
             </div>
           </Link>
         </div>

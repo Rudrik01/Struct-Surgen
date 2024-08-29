@@ -1,31 +1,18 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema(
-  {
-    sNo: { type: Number },
-    companyName: { type: String,index:true },
-    consultant: { type: String },
-    gidc: { type: String },
-    type: { type: String },
-    employ: { type: String },
-    hp: { type: String },
-    status: { type: String },
-    priVisit: { type: Date },
-    quotation: { type: Date },
-    visit: { type: Date },
-    drawing: { type: Date },
-    documentsToBeUpload: [{ type: String }], // Array of file paths
-    assignedTo: {type:String},
-  },
-  {
-    timestamps: true,
-  }
-);
+const taskSchema = new Schema({
+  companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
+  taskType: { type: String, enum: ['Documents', 'Drawing', 'License', 'Site Visit', 'Stability'], required: true },
+  assignedTo: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  formData: { type: Schema.Types.Mixed }, // Dynamic fields for each task
+  deadline: { type: Date, required: true },
+  status: { type: String, enum: ['Pending', 'Completed'], default: 'Pending' },
+}, {
+  timestamps: true,
+});
 
+const Task = mongoose.model('Task', taskSchema);
 
-const task = mongoose.model('task', userSchema);
-
-export default task;
+export default Task;

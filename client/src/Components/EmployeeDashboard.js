@@ -1,50 +1,70 @@
-// client/src/Components/EmployeeDashboard.js
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './EmployeeDashboard.css';
 
 const EmployeeDashboard = () => {
-  const { employeeId } = useParams();
-  const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5000/display/tasks/${employeeId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setTasks(response.data);
-      } catch (error) {
-        console.error('Error fetching tasks:', error);
-      }
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const employeeId = localStorage.getItem('employeeId');
+                const response = await axios.get(`http://localhost:5000/api/employee/tasks/${employeeId}`);
+                setTasks(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching tasks', error);
+                setLoading(false);
+            }
+        };
+
+        fetchTasks();
+    }, []);
+
+    const handleTaskClick = (taskType) => {
+        navigate(`/employee/tasks/${taskType}`);
     };
 
-    fetchTasks();
-  }, [employeeId]);
-
-  return (
-    <div className="employee-dashboard">
-      <header className="employee-header">
-        <h2>Welcome, Employee {employeeId}</h2>
-        <p>Here are your assigned tasks:</p>
-      </header>
-      <section className="tasks-container">
-        {tasks.length > 0 ? (
-          tasks.map(task => (
-            <div key={task._id} className="task-card">
-              <h3>{task.companyName}</h3>
-              <p>{task.consultant}</p>
-              <p>Status: {task.status}</p>
+    return (
+        <div className="dashboard-container">
+            <nav className="navbar">
+                <div className="logo">
+                    <img src="/logo.png" alt="Company Logo" />
+                </div>
+                <div className="nav-buttons">
+                    <button onClick={() => navigate('/employee/profile')}>Profile</button>
+                    <button onClick={() => {
+                        localStorage.clear();
+                        navigate('/login');
+                    }}>Logout</button>
+                </div>
+            </nav>
+            <div className="content-wrapper">
+                <div className="welcome-container">
+                    <h1>Welcome to Your Dashboard</h1>
+                    <p>Manage your tasks efficiently and stay on top of your assignments.</p>
+                </div>
+                {loading ? (
+                    <div className="spinner-container">
+                        <div className="spinner"></div>
+                        <p>Loading tasks...</p>
+                    </div>
+                ) : (
+                    <div className="content-container">
+                        {tasks.map(task => (
+                            <div key={task.id} className="task-card" onClick={() => handleTaskClick(task.taskType)}>
+                                <h3>{task.taskType}</h3>
+                                <p>{task.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-          ))
-        ) : (
-          <p>No tasks assigned.</p>
-        )}
-      </section>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default EmployeeDashboard;

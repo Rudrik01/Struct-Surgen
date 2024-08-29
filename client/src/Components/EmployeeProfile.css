@@ -1,0 +1,89 @@
+/* EmployeeProfile.css */
+
+.profile-page {
+  background-color: #f0fff0; /* Matching the light green background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lexend Deca', sans-serif;
+}
+
+.profile-nav {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.back-button, .change-password-button {
+  background-color: #ff4c4c; /* Red button background */
+  color: white;
+  border: none;
+  padding: 20px 20px;
+  margin-left: 10px;
+  font-size: 130%;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.back-button:hover, .change-password-button:hover {
+  background-color: #e04343; /* Darker red on hover */
+}
+
+.profile-card {
+  background-color: #d3d3d3; /* Soft gray-green for the card */
+  margin-top: 200px;
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.company-logo {
+  width: 150px;
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+}
+
+.profile-avatar {
+  margin-top: -100px;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  border: 2px solid #ffffff; /* White border around the avatar */
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.profile-name {
+  color: #4a4a4a; /* Dark gray text */
+  font-size: 24px;
+  margin: 0;
+}
+
+.profile-details p {
+  color: #4a4a4a; /* Dark gray text */
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.loading-spinner {
+  font-size: 20px;
+  color: #4a4a4a; /* Dark gray text */
+  text-align: center;
+  margin-top: 20%;
+}
