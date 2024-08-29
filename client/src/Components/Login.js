@@ -44,6 +44,7 @@ const Login = () => {
             <div className="form-group">
               <label className="label">Employee ID:</label>
               <input
+                style={{ color: 'black' }}
                 type="text"
                 value={employeeId}
                 onChange={(e) => setEmployeeId(e.target.value)}
@@ -56,6 +57,7 @@ const Login = () => {
             <div className="form-group">
               <label className="label">Password:</label>
               <input
+               style={{ color: 'black' }}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

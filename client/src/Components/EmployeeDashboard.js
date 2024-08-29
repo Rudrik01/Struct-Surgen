@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
 import './EmployeeDashboard.css';
 
 const EmployeeDashboard = () => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -27,6 +28,30 @@ const EmployeeDashboard = () => {
     const handleTaskClick = (taskType) => {
         navigate(`/employee/tasks/${taskType}`);
     };
+    useEffect(() => {
+        const clearLocalStorage = () => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+        };
+    
+        // Clear local storage when the component unmounts
+        return () => {
+          clearLocalStorage();
+        };
+      }, []);
+    
+      useEffect(() => {
+        const handleLocationChange = () => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+        };
+    
+        // Listen for location changes
+        return () => {
+          // Unsubscribe from location changes when the component unmounts
+          handleLocationChange();
+        };
+      }, [location]);
 
     return (
         <div className="dashboard-container">

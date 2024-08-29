@@ -47,6 +47,7 @@ const EmployeeForm = () => {
           <div className="form-group">
             <label className="label">Email:</label>
             <input
+             style={{ color: 'black' }}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -59,6 +60,7 @@ const EmployeeForm = () => {
           <div className="form-group">
             <label className="label">Name:</label>
             <input
+               style={{ color: 'black' }}
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -80,8 +82,8 @@ const EmployeeForm = () => {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="employee">Employee</MenuItem>
+                <MenuItem value="admin"  style={{ color: 'black' }}>Admin</MenuItem>
+                <MenuItem value="employee"  style={{ color: 'black' }}> Employee</MenuItem>
               </Select>
               <FormHelperText>Choose the role for the employee</FormHelperText>
             </FormControl>

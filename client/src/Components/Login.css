@@ -25,6 +25,7 @@
   height: auto;
   border-radius: 18px;
   background: #C9D4C6;
+  
 }
 
 .logo {
@@ -59,7 +60,7 @@
   border-radius: 7px;
   background: #EDF5EA;
   margin-top: 1rem;
-  color: #AFBDAB;
+  color:black;
   font-family: "Lexend Deca";
   font-size: 16px;
   font-weight: 400;
