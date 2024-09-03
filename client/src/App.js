@@ -14,6 +14,8 @@ import CompanyRegistration from './Components/CompanyRegistration';
 import EmployeeDashboard from './Components/EmployeeDashboard';
 import TaskForm from './Components/TaskForm';
 import EmployeeProfile from './Components/EmployeeProfile';
+import TaskTypePage from './Components/TaskTypePage';
+import TaskFormPage from "./Components/TaskFormPage"
 const App = () => {
   return (
     <Routes>
@@ -27,6 +29,8 @@ const App = () => {
       <Route path="/company" element={<ProtectedRoute element={CompanyRegistration} roles={['admin']} />} />
       <Route path="/taskall" element={<ProtectedRoute element={TaskAllocation} roles={['admin']} />} />
       <Route path="/dashboard" element={<ProtectedRoute element={EmployeeDashboard} />} />
+      <Route path="/employee/tasks/:taskType" element={<ProtectedRoute element={TaskTypePage} />} />
+      <Route path="/employee/task/:taskId/form" element={<ProtectedRoute element={TaskFormPage} />} />
       <Route path="/task/:taskId" element={<ProtectedRoute element={TaskForm} />} />
       <Route path="/employee/profile" element={<ProtectedRoute element={EmployeeProfile} />} />
 

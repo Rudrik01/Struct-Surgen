@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose  from "mongoose";
 import cors from 'cors';
-import connectDB from '../config/db.js';
+// import connectDB from '../config/db.js';
 import dotenv from "dotenv";
 import  authRoutes from './Routes/auth.js';
 import { Route } from 'router';

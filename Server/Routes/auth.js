@@ -202,6 +202,7 @@ router.post('/login', async (req, res) => {
     const { employeeId, password } = req.body;
 
     let user;
+    console.log(`Attempting login for employeeId: ${employeeId}`);
 
     // Check if the user is attempting admin login
     if (employeeId === 'admin') {
@@ -210,6 +211,8 @@ router.post('/login', async (req, res) => {
       user = await User.findOne({ employeeId });
     }
 
+    console.log(`User found: ${user ? user.employeeId : "No user found"}`);
+
     // Check if the user exists
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -217,6 +220,7 @@ router.post('/login', async (req, res) => {
 
     // Check if the provided password matches the stored hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log(`Is password valid: ${isPasswordValid}`);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });

@@ -15,6 +15,7 @@ const router = express.Router();
 // }
 
 // GET all tasks assigned to a specific employee
+
 // GET all tasks assigned to a specific employee
 router.get('/tasks/:employeeid', async (req, res) => {
   const { employeeid } = req.params;  // Use 'employeeid' to match the route parameter
@@ -105,5 +106,23 @@ router.get('/profile/:employeeId', async (req, res) => {
     res.status(500).json({ message: 'Error fetching employee profile', error });
   }
 });
+
+// GET companies that assigned a specific task type to the employee
+router.get('/tasks/:employeeid/:taskType/companies', async (req, res) => {
+  const { employeeid, taskType } = req.params;
+
+  try {
+    const user = await User.findOne({ employeeId: employeeid });
+    const tasks = await Task.find({ assignedTo: user._id, taskType })
+      .populate('companyId', 'companyName')
+      .exec();
+
+    const companies = tasks.map(task => task.companyId);
+    res.status(200).json(companies);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching companies', error });
+  }
+});
+
 
 export default router;
