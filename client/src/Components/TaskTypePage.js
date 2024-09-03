@@ -17,6 +17,7 @@ const TaskTypePage = () => {
           `http://localhost:5000/api/employee/tasks/${employeeId}/${taskType}/companies`
         );
         setCompanies(response.data);
+  
         setLoading(false);
       } catch (error) {
         console.error("Error fetching companies", error);
