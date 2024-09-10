@@ -55,35 +55,55 @@ router.get('/task/:taskId', async (req, res) => {
   }
 });
 
-// PUT to update the task status or save form data
-router.put('/task/:taskId', async (req, res) => {
+router.put('/ta/:taskId', async (req, res) => {
   const { taskId } = req.params;
   const { formData, completed } = req.body;
+  console.log(taskId);
+  console.log(formData);
+
+  // Input Validation
+  if (!mongoose.Types.ObjectId.isValid(taskId)) {
+    return res.status(400).json({ message: 'Invalid Task ID' });
+  }
 
   try {
+    // Find the task by ID
     const task = await Task.findById(taskId);
-
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
+    // Update formData if provided
     if (formData) {
+      // Optionally, validate formData structure here
       task.formData = formData;
+      console.log(task.formData)
     }
 
+    // Update status if 'completed' flag is provided
+    if (typeof completed === 'boolean') {
+      task.status = completed ? 'Completed' : 'Pending';
+    }
+
+    // Save the task
+    await task.save();
+
+    // If task is marked as completed, update the Company's tasksCompleted map
     if (completed) {
-      task.status = 'Completed';
-      
-      // Update the tasksCompleted map in the Company model
       const company = await Company.findById(task.companyId);
+      if (!company) {
+        return res.status(404).json({ message: 'Associated Company not found' });
+      }
+
+      // Update the tasksCompleted map
       company.tasksCompleted.set(task.taskType, true);
       await company.save();
     }
 
-    await task.save();
-    res.status(200).json(task);
+    res.status(200).json({ message: 'Task updated successfully', task });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating task', error });
+    console.error('Error updating task:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
@@ -114,11 +134,11 @@ router.get('/tasks/:employeeid/:taskType/companies', async (req, res) => {
   try {
     const user = await User.findOne({ employeeId: employeeid });
     const tasks = await Task.find({ assignedTo: user._id, taskType })
-      .populate('companyId', 'companyName')
+      .populate('companyId', 'srNo companyName')
       .exec();
 
     const companies = tasks.map(task => task.companyId);
-    res.status(200).json(companies);
+    res.status(200).json({companies,tasks});
   } catch (error) {
     res.status(500).json({ message: 'Error fetching companies', error });
   }

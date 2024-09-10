@@ -27,7 +27,7 @@ const EmployeeProfile = () => {
         <div className="profile-page">
             <nav className="profile-nav">
                 <button onClick={() => navigate('/dashboard')} className="back-button">Back to Dashboard</button>
-                <button onClick={() => navigate('/change-password')} className="change-password-button">Change Password</button>
+                <button onClick={() => navigate('/ChangePassword')} className="change-password-button">Change Password</button>
             </nav>
             <div className="profile-card">
                 <img src="/logo.png" alt="Company Logo" className="company-logo" />

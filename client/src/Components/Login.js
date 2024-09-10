@@ -2,11 +2,13 @@ import "./Login.css";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const Login = () => {
   const [employeeId, setEmployeeId] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -56,16 +58,24 @@ const Login = () => {
             </div>
             <div className="form-group">
               <label className="label">Password:</label>
-              <input
-               style={{ color: 'black' }}
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="input"
-                placeholder="Enter Password"
-                autoComplete="off"
-              />
+              <div className="password-container">
+                <input
+                  style={{ color: 'black' }}
+                  type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="input"
+                  placeholder="Enter Password"
+                  autoComplete="off"
+                />
+                <span
+                  className="password-toggle-icon"
+                  onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </div>
             {loginError && <div className="error-message">{loginError}</div>}
             <button type="submit" className="button">
