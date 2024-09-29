@@ -49,7 +49,7 @@ const AdminHome = () => {
           <p>Manage tasks, view statistics, and handle employee registrations with ease.</p>
         </div>
         <div className="cards-container">
-          <Link to="/AdminDashboard" className="dashboard-card animate">
+          <Link to="/TaskStatusPage" className="dashboard-card animate">
             <img src="/path/to/image1.jpg" alt="Task Statistics" className="card-image" />
             <div className="card-content">
               <h2>View Task Statistics</h2>

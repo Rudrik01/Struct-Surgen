@@ -3,7 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
 import EmployeeForm from './Components/Register';
 import AdminForm from './Components/addadmin';
-import AdminDashboard from './Components/taskstat';
+import TaskStatusPage from './Components/TaskStatusPage';
+import CompanyCardsPage from './Components/CompanyCardsPage';
+import FormStatusPage from './Components/FormStatusPage';
 import TaskAssignment from './Components/TaskAssignment';
 import ChangePassword from './Components/resetpassword';
 import AdminHome from './Components/AdminHome';
@@ -24,7 +26,7 @@ const App = () => {
       <Route path="/register" element={<ProtectedRoute element={EmployeeForm} roles={['admin']} />} />
       <Route path="/ChangePassword" element={<ProtectedRoute element={ChangePassword} />} />
       <Route path="/addadmin" element={<ProtectedRoute element={AdminForm} roles={['admin']} />} />
-      <Route path="/AdminDashboard" element={<ProtectedRoute element={AdminDashboard} roles={['admin']} />} />
+      <Route path="/TaskStatusPage" element={<ProtectedRoute element={TaskStatusPage} roles={['admin']} />} />
       <Route path="/TaskAssignment" element={<ProtectedRoute element={TaskAssignment} roles={['admin']} />} />
       <Route path="/company" element={<ProtectedRoute element={CompanyRegistration} roles={['admin']} />} />
       <Route path="/taskall" element={<ProtectedRoute element={TaskAllocation} roles={['admin']} />} />
@@ -33,6 +35,8 @@ const App = () => {
       <Route path="/employee/task/:taskId/form" element={<ProtectedRoute element={TaskFormPage} />} />
       <Route path="/task/:taskId" element={<ProtectedRoute element={TaskForm} />} />
       <Route path="/employee/profile" element={<ProtectedRoute element={EmployeeProfile} />} />
+      <Route path="/company-cards/:employeeId/:taskType/:employeeName" element={<ProtectedRoute element={CompanyCardsPage} roles={['admin']} />} />
+      <Route path="/form-status/:taskId" element={<ProtectedRoute element={FormStatusPage} roles={['admin']} />} />
 
       {/* Add other routes as needed */}
     </Routes>

@@ -14,6 +14,7 @@ import display from './Routes/display.js'
 import userRoutes from './Routes/users.js';
 import newtask from './Routes/newtask.js'
 import employeeDashboardRoutes from './Routes/employeedashboardroutes.js'; 
+import admin from './Routes/admin.js'
 dotenv.config({path: '../.env'});
 const app = express();
 const PORT = process.env.PORT;
@@ -35,6 +36,7 @@ app.use('/display',display);
 app.use('/api/users', userRoutes);
 app.use('/api/new',newtask);
 app.use('/api/employee', employeeDashboardRoutes);
+app.use('/api/admin',admin)
 
 
 app.use('/tasks',task)

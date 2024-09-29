@@ -467,11 +467,11 @@ function App() {
     // Convert null values to 'No' if required
     const formattedData = { ...formData };
     Object.keys(formData).forEach((key) => {
-      if (formData[key] === null) {
-        formattedData[key] = "No";
-      } else {
-        formattedData[key] = formData[key] ? "Yes" : "No";
+      if (key !== "srNo" && key !== "companyName") {
+        // Convert null values to 'No' and truthy values to 'Yes'
+        formattedData[key] = formData[key] === null ? "No" : formData[key] ? "Yes" : "No";
       }
+      
     });
 
     // Prepare the payload including taskId

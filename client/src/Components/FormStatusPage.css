@@ -1,0 +1,52 @@
+.form-status-page {
+  background-color: #e6f0e6; /* Light green background */
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 60px;
+  margin-right: 10px;
+}
+
+h1, h2 {
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.task-info, .form-data {
+  margin-bottom: 20px;
+}
+
+.task-field {
+  margin-bottom: 15px;
+}
+
+.task-field label, .form-field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.task-input {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  color: #333;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
