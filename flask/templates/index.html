@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Calculation</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        /* Global styles */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #ff4c4c;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            border: 2px solid #ddd;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #ff4c4c;
+            box-shadow: 0 0 8px rgba(255, 76, 76, 0.2);
+        }
+
+        .btn-primary {
+            background-color: #ff4c4c;
+            border-color: #ff4c4c;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #e04343;
+        }
+
+        .form-text {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Load Calculation Form</h2>
+        <form action="/generate" method="POST">
+            <div class="mb-3">
+                <label for="span" class="form-label">Span (m)</label>
+                <input type="number" step="0.01" name="span" class="form-control" id="span" required>
+                <div class="form-text">Enter the span in meters.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="bays" class="form-label">Number of Bays</label>
+                <input type="number" name="bays" class="form-control" id="bays" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="bay_length" class="form-label">Bay Length (m)</label>
+                <input type="number" step="0.01" name="bay_length" class="form-control" id="bay_length" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="eves_height" class="form-label">Eves Height (m)</label>
+                <input type="number" step="0.01" name="eves_height" class="form-control" id="eves_height" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="ridge_height" class="form-label">Ridge Height (m)</label>
+                <input type="number" step="0.01" name="ridge_height" class="form-control" id="ridge_height" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="live_load" class="form-label">Live Load (KN/m<sup>2</sup>)</label>
+                <input type="number" step="0.01" name="live_load" class="form-control" id="live_load" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="vb" class="form-label">Basic Wind Speed (Vb)</label>
+                <input type="number" name="vb" class="form-control" id="vb" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="k1" class="form-label">K1 (Risk Coefficient)</label>
+                <input type="number" step="0.01" name="k1" class="form-control" id="k1" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="terrain_category" class="form-label">Terrain Category</label>
+                <input type="number" name="terrain_category" class="form-control" id="terrain_category" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="k3" class="form-label">K3 (Topography Factor)</label>
+                <input type="number" step="0.01" name="k3" class="form-control" id="k3" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="roof_weight" class="form-label">Roof Weight (KN/m<sup>2</sup>)</label>
+                <input type="number" step="0.01" name="roof_weight" class="form-control" id="roof_weight" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="purline_weight" class="form-label">Purline Weight (KN/m)</label>
+                <input type="number" step="0.01" name="purline_weight" class="form-control" id="purline_weight" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="purline_spacing" class="form-label">Purline Spacing (m)</label>
+                <input type="number" step="0.01" name="purline_spacing" class="form-control" id="purline_spacing" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="internal_wind_pressure" class="form-label">Internal Wind Pressure (KN/m<sup>2</sup>)</label>
+                <input type="number" step="0.01" name="internal_wind_pressure" class="form-control" id="internal_wind_pressure" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Generate Document</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS (Optional for interactive components like modals, carousels) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
