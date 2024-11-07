@@ -17,7 +17,10 @@ import EmployeeDashboard from './Components/EmployeeDashboard';
 import TaskForm from './Components/TaskForm';
 import EmployeeProfile from './Components/EmployeeProfile';
 import TaskTypePage from './Components/TaskTypePage';
-import TaskFormPage from "./Components/TaskFormPage"
+import DocuementFormPage from './Components/DocumentFormPage';
+import SiteVisitForm from './Components/SiteVisitForm';
+import LicenseFormPage from './Components/LicenseFormPage';
+import DrawingUploadForm from './Components/DrawingUploadForm';
 const App = () => {
   return (
     <Routes>
@@ -32,13 +35,14 @@ const App = () => {
       <Route path="/taskall" element={<ProtectedRoute element={TaskAllocation} roles={['admin']} />} />
       <Route path="/dashboard" element={<ProtectedRoute element={EmployeeDashboard} />} />
       <Route path="/employee/tasks/:taskType" element={<ProtectedRoute element={TaskTypePage} />} />
-      <Route path="/employee/task/:taskId/form" element={<ProtectedRoute element={TaskFormPage} />} />
+      <Route path="/document-form" element={<ProtectedRoute element={DocuementFormPage} />} />
       <Route path="/task/:taskId" element={<ProtectedRoute element={TaskForm} />} />
       <Route path="/employee/profile" element={<ProtectedRoute element={EmployeeProfile} />} />
       <Route path="/company-cards/:employeeId/:taskType/:employeeName" element={<ProtectedRoute element={CompanyCardsPage} roles={['admin']} />} />
       <Route path="/form-status/:taskId" element={<ProtectedRoute element={FormStatusPage} roles={['admin']} />} />
-
-      {/* Add other routes as needed */}
+      <Route path="/siteVisit-form" element={<ProtectedRoute element={SiteVisitForm} />}/>
+      <Route path='/license-form' element={<ProtectedRoute element={LicenseFormPage}/>}/>
+      <Route path='/drawing-upload'element={<ProtectedRoute element={DrawingUploadForm}/>}/>
     </Routes>
   );
 };

@@ -433,10 +433,10 @@
 // export default App;
 import React, { useState } from "react";
 import axios from "axios"; // Import axios for sending data
-import "./TaskFormPage.css";
+import "./DocuementFormPage.css";
 import { useLocation } from "react-router-dom";
 
-function App() {
+function DocuementFormPage() {
   const location = useLocation();
   const { companyName, srNo,taskId } = location.state || {};
   
@@ -892,4 +892,4 @@ function App() {
   );
 }
 
-export default App;
+export default DocuementFormPage;

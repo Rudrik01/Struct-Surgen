@@ -80,6 +80,14 @@ const TaskTypePage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+ 
+   const type = taskType.trim(" ").toLowerCase()
+  //  console.log("task type", type);
+
+  //  if(type === "site visit"){
+  //   navigate()
+  //  }
+
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -100,7 +108,7 @@ const TaskTypePage = () => {
     fetchCompanies();
   }, [taskType]);
 
-  const handleCompanyClick = (companyId, companyName, srNo) => {
+  const handleCompanyClick = (companyId, companyName, srNo, taskType) => {
     // Find the task related to the clicked company
     const taskForCompany = tasks.find(task => task.companyId._id === companyId);
 
@@ -111,11 +119,36 @@ const TaskTypePage = () => {
       console.log("companyId:", companyId);
       console.log("companyName:", companyName);
       console.log("srNo:", srNo);
+      console.log("task type", taskType)
+
+      if (taskType === "Documents") {
+        navigate("/document-form", {
+          state: { companyName, srNo, taskId },
+        });
+      }
+
+      if(taskType === "Site Visit"){
+        navigate("/siteVisit-form", {
+          state: { companyName, srNo, taskId },
+        });
+      }
+
+      if(taskType === "License"){
+        navigate("/license-form", {
+          state:{companyName, srNo, taskId}
+        })
+      }
+
+      if(taskType === "Drawing"){
+        navigate("/drawing-upload", {
+          state: {companyName, srNo, taskId},
+        });
+      }
 
       // Navigate to the next page with taskId and company details
-      navigate(`/employee/task/${companyId}/form`, {
-        state: { companyName, srNo, taskId }, // Pass company name and taskId through state
-      });
+      // navigate(`/employee/task/${companyId}/form`, {
+      //   state: { companyName, srNo, taskId }, // Pass company name and taskId through state
+      // });
     } else {
       console.error("Task not found for the selected company.");
     }
@@ -142,7 +175,7 @@ const TaskTypePage = () => {
               <div
                 key={company._id}
                 className="company-card"
-                onClick={() => handleCompanyClick(company._id, company.companyName,company.srNo)}
+                onClick={() => handleCompanyClick(company._id, company.companyName,company.srNo, taskType)}
               >
                 <h3>{company.companyName}</h3>
               </div>
